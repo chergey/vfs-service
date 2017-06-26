@@ -1,11 +1,9 @@
 package vfs.impl;
 
-import vfs.VfsDirectory;
-import vfs.VfsEntity;
-import vfs.VfsException;
-import vfs.VfsFile;
+import vfs.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class VfsDirectoryImpl extends VfsEntity implements VfsDirectory {
 
@@ -19,7 +17,7 @@ public class VfsDirectoryImpl extends VfsEntity implements VfsDirectory {
     @Override
     public VfsFile createFile(String name) {
         if (entities.stream().anyMatch(f -> f.getName().equals(name))) {
-            throw new VfsException(String.format("Object with the name %s already exists!", name));
+            throw new VfsException(VfsExceptionType.OBJECT_ALREADY_EXISTS, name);
         }
         VfsFile file = new VfsFileImpl(name, this);
         entities.add((VfsEntity) file);
@@ -31,7 +29,7 @@ public class VfsDirectoryImpl extends VfsEntity implements VfsDirectory {
     public VfsDirectory createSubDir(String name) {
 
         if (entities.stream().anyMatch(f -> f.getName().equals(name))) {
-            throw new VfsException(String.format("Object with the name %s already exists!", name));
+            throw new VfsException(VfsExceptionType.OBJECT_ALREADY_EXISTS, name);
         }
         VfsDirectoryImpl dir = new VfsDirectoryImpl(name, this);
         entities.add(dir);
@@ -57,7 +55,7 @@ public class VfsDirectoryImpl extends VfsEntity implements VfsDirectory {
             ((VfsDirectory) entity).checkSubDirs();
         } else {
             if (((VfsFileImpl) entity).isLocked(null)) {
-                throw new VfsException(String.format("File %s is locked and can't be deleted!", entity.getName()));
+                throw new VfsException(VfsExceptionType.FILE_LOCKED, entity.getName());
             }
         }
 
@@ -65,12 +63,14 @@ public class VfsDirectoryImpl extends VfsEntity implements VfsDirectory {
 
     }
 
+
+
     @Override
     public void checkSubDirs() {
         Optional<VfsDirectory> dir = entities.stream().filter(f -> f instanceof VfsDirectory)
                 .map(f -> (VfsDirectory) f).findFirst();
         if (dir.isPresent()) {
-            throw new VfsException(String.format("Directory %s contains subdirectories", getName()));
+            throw new VfsException(VfsExceptionType.DIR_CONTAINS_SUBDIRS, getName());
         }
 
     }
@@ -83,12 +83,13 @@ public class VfsDirectoryImpl extends VfsEntity implements VfsDirectory {
 
         if (file.isPresent()) {
             if (file.get().isLocked(null))
-                throw new VfsException(String.format("Directory %s contains subdirectories", getName()));
+                throw new VfsException(VfsExceptionType.DIR_CONTAINS_LOCKED_FILES, getName());
         }
 
 
+
         entities.stream().filter(f -> f instanceof VfsDirectory)
-                .map(f -> (VfsDirectory) f).forEach(a -> checkLocks());
+                .map(f -> (VfsDirectory) f).forEach(VfsDirectory::checkLocks);
 
 
     }

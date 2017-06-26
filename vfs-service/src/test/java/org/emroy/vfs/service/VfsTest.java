@@ -5,11 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import vfs.VfsSystem;
-import vfs.impl.VfsDirectoryImpl;
-import vfs.VfsException;
-import vfs.VfsDirectory;
-import vfs.VfsFile;
+import vfs.*;
 
 
 public class VfsTest {
@@ -40,7 +36,7 @@ public class VfsTest {
     }
 
     @Test
-    public void testCreateNestedDirectoriesAndFiles() throws VfsException {
+    public void testCreateNestedDirectoriesAndFiles()  {
         VfsDirectory dir1 = vfs.createSubDir("dir1");
         dir1.createSubDir("dir2");
 
@@ -56,11 +52,41 @@ public class VfsTest {
 
 
     @Test
-    public void testLock() throws VfsException {
+    public void testLock()  {
         VfsDirectory dir = vfs.createSubDir("dir1");
         VfsFile file1 = dir.createFile("file1.txt");
         vfs.lockFile("dir1/file1.txt",true, "test");
         Assertions.assertTrue(file1.isLocked(null));
+
+
+    }
+
+    @Test
+    public void testDelete()
+    {
+        VfsDirectory dir = vfs.createSubDir("dir1");
+        VfsFile file1 = dir.createFile("file1.txt");
+        vfs.lockFile("dir1/file1.txt",true, "test");
+        vfs.createSubDir("dir1/dir2");
+        ExceptionUtil.expectThrow(VfsException.class, ()-> vfs.delete("dir1/file1.txt"),
+                "Locked file should not be deleted!", VfsExceptionType.FILE_LOCKED);
+
+        ExceptionUtil.expectThrow(VfsException.class, ()-> vfs.delete("dir1"),
+                "Directory with subdirectories should not be deleted!", VfsExceptionType.DIR_CONTAINS_LOCKED_FILES);
+
+
+
+    }
+
+    @Test
+    public void testDeleteSubdirs()
+    {
+        VfsDirectory dir = vfs.createSubDir("dir1");
+        vfs.createSubDir("dir1/dir2");
+
+        ExceptionUtil.expectThrow(VfsException.class, ()-> vfs.delete("dir1"),
+                "Directory with subdirectories should not be deleted!", VfsExceptionType.DIR_CONTAINS_SUBDIRS);
+
 
 
     }
@@ -75,4 +101,5 @@ public class VfsTest {
     public void testMove() {
 
     }
+
 }

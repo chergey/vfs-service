@@ -5,7 +5,18 @@ package vfs;
  */
 public class VfsException extends RuntimeException {
 
-    public VfsException(String name) {
-        super(name);
+    private VfsExceptionType type;
+
+    public VfsException( VfsExceptionType type , Object... parameters) {
+
+        super(String.format(type.getText(), parameters));
+        this.type=type;
+
+
+    }
+
+    public VfsExceptionType getType()
+    {
+        return type;
     }
 }

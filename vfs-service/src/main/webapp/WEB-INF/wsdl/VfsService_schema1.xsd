@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://service.vfs.emroy.org/" xmlns:tns="http://service.vfs.emroy.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="createDirectory" type="tns:createDirectory"/>
+
+  <xs:element name="createDirectoryResponse" type="tns:createDirectoryResponse"/>
+
+  <xs:element name="createFile" type="tns:createFile"/>
+
+  <xs:element name="createFileResponse" type="tns:createFileResponse"/>
+
+  <xs:element name="deleteDirectory" type="tns:deleteDirectory"/>
+
+  <xs:element name="deleteDirectoryResponse" type="tns:deleteDirectoryResponse"/>
+
+  <xs:complexType name="createFile">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createFileResponse">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="deleteDirectory">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deleteDirectoryResponse">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="createDirectory">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createDirectoryResponse">
+    <xs:sequence/>
+  </xs:complexType>
+</xs:schema>
+

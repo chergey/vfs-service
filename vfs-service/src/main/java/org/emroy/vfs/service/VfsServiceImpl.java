@@ -15,27 +15,27 @@ public class VfsServiceImpl implements VfsService {
     public static VfsSystem vfs;
 
     @Override
-    public void createFile(String path) throws VfsException {
+    public void createFile(String path)  {
         vfs.createFile(path);
     }
 
     @Override
-    public void createDirectory(String path) throws VfsException {
+    public void createDirectory(String path) {
         vfs.createSubDir(path);
     }
 
     @Override
-    public void deleteDirectory(String path) throws VfsException {
+    public void deleteDirectory(String path)  {
         vfs.delete(path);
     }
 
     @Override
-    public void deleteFile(String path) throws VfsException {
-
+    public void deleteFile(String path)  {
+        vfs.delete(path);
     }
 
     @Override
-    public void copy(String srcPath, String destPath) throws VfsException {
+    public void copy(String srcPath, String destPath)  {
 
     }
 
@@ -45,7 +45,7 @@ public class VfsServiceImpl implements VfsService {
     }
 
     @Override
-    public void getContents(String path) throws VfsException {
-
+    public String getContents(String path) throws VfsException {
+            return null;
     }
 }

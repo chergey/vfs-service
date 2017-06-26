@@ -31,7 +31,7 @@ public class VfsSystem {
 
         VfsEntity supposedFile = findEntity(path);
         if (supposedFile instanceof VfsDirectory) {
-            throw new VfsException(String.format("Object %s corresponds to a directory!", path));
+            throw new VfsException(VfsExceptionType.COR_TO_DIR, path);
         }
         if (value) {
             ((VfsFile) supposedFile).lock(userName);
@@ -54,7 +54,7 @@ public class VfsSystem {
 
             Optional<VfsEntity> entity = dir.findFirst(path);
             if (!entity.isPresent()) {
-                throw new VfsException(String.format("Object %s does not exist!", path));
+                throw new VfsException(VfsExceptionType.OBJ_NOT_EXISTS, path);
             }
 
             return entity.get();
@@ -121,7 +121,7 @@ public class VfsSystem {
         String firstDir = retrieveFirstDir(path);
         Optional<VfsEntity> supposedDir = dir.findFirst(firstDir);
         if (!supposedDir.isPresent()) {
-            throw new VfsException(String.format("Directory %s doesn't not exist!", firstDir));
+            throw new VfsException(VfsExceptionType.DIR_NOT_EXISS, firstDir);
         }
         return (VfsDirectoryImpl) supposedDir.get();
 

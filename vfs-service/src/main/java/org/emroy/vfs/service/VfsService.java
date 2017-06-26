@@ -13,23 +13,23 @@ import javax.jws.WebService;
 public interface VfsService {
 
     @WebMethod
-    void createFile(String path) throws VfsException;
+    void createFile(String path) ;
 
     @WebMethod
-    void createDirectory(String path) throws VfsException;
+    void createDirectory(String path) ;
 
     @WebMethod
-    void deleteDirectory(String path) throws VfsException;
+    void deleteDirectory(String path) ;
 
     @WebMethod
-    void deleteFile(String path) throws VfsException;
+    void deleteFile(String path) ;
 
     @WebMethod
-    void copy(String srcPath, String destPath) throws VfsException;
+    void copy(String srcPath, String destPath) ;
 
     @WebMethod
-    void move(String srcPath, String destPath) throws VfsException;
+    void move(String srcPath, String destPath) ;
 
     @WebMethod
-    void getContents(String path) throws VfsException;
+    String getContents(String path) ;
 }
