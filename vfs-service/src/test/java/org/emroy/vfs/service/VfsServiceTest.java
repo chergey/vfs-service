@@ -1,5 +1,6 @@
 package org.emroy.vfs.service;
-/*
+
+import org.emroy.vfs.service.junit5.ArquillianExt;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -10,10 +11,12 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import vfs.VfsException;
 
+import javax.inject.Inject;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import java.net.MalformedURLException;
@@ -21,7 +24,7 @@ import java.net.URL;
 
 
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExt.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class VfsServiceTest {
 
@@ -35,8 +38,8 @@ public class VfsServiceTest {
 
     }
 
-    @ArquillianResource
-    static URL url;
+    @Inject
+     URL url;
 
 
     @Before
@@ -56,4 +59,3 @@ public class VfsServiceTest {
 
 }
 
-*/

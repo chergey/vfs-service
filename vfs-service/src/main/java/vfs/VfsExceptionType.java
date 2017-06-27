@@ -6,7 +6,7 @@ package vfs;
 public enum VfsExceptionType {
 
     DIR_NOT_EXISS("Directory does %s does not exist"),
-    FILE_NOT_EXISTS("Directory does %s does not exist"),
+    FILE_NOT_EXISTS("File does %s does not exist"),
     COR_TO_DIR("Object %s corresponds to a directory!"),
     OBJ_NOT_EXISTS("Object %s does not exist!"),
     OBJECT_ALREADY_EXISTS("Object with the name %s already exists!"),

@@ -11,8 +11,6 @@ public class VfsException extends RuntimeException {
 
         super(String.format(type.getText(), parameters));
         this.type=type;
-
-
     }
 
     public VfsExceptionType getType()

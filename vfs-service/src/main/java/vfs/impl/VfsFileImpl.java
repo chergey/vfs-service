@@ -23,17 +23,15 @@ public class VfsFileImpl extends VfsEntity implements VfsFile {
        super(name, parent);
     }
 
-
     public synchronized void lock(String userName) {
         locks.add(userName);
     }
-
 
     public synchronized void unlock(String userName) {
         locks.remove(userName);
     }
 
-    public byte[] getFileContents() {
+    public synchronized byte[] getFileContents() {
         return  contents;
     }
 

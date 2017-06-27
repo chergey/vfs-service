@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by Karl H on 25/06/2017.
@@ -46,8 +47,14 @@ public class VfsSystem {
         return findEntity(ROOT, path);
     }
 
+    /**
+     * Returns entity by path
+     * @param dir
+     * @param path
+     * @return
+     */
     private VfsEntity findEntity(VfsDirectory dir, String path) throws VfsException {
-        if (IsSupposedDir(path)) {
+        if (isSupposedDir(path)) {
             VfsDirectory subDir = findSubDir(dir, path);
             return findEntity(subDir, retrieveSubPath(path));
         } else {
@@ -67,15 +74,14 @@ public class VfsSystem {
      * Creates subdir
      *
      * @param path
-     * @throws VfsException
      */
-    public VfsDirectory createSubDir(String path) throws VfsException {
+    public VfsDirectory createSubDir(String path)  {
 
         return createSubDir(ROOT, path);
     }
 
-    private VfsDirectory createSubDir(VfsDirectory dir, String path) throws VfsException {
-        if (IsSupposedDir(path)) {
+    private VfsDirectory createSubDir(VfsDirectory dir, String path) {
+        if (isSupposedDir(path)) {
             VfsDirectory subDir = findSubDir(dir, path);
             return createSubDir(subDir, retrieveSubPath(path));
         } else {
@@ -90,16 +96,15 @@ public class VfsSystem {
      *
      * @param path
      * @return
-     * @throws VfsException
      */
 
-    public VfsFile createFile(String path) throws VfsException {
+    public VfsFile createFile(String path)  {
         return createFile(ROOT, path);
     }
 
 
-    private VfsFile createFile(VfsDirectory dir, String path) throws VfsException {
-        if (IsSupposedDir(path)) {
+    private VfsFile createFile(VfsDirectory dir, String path)  {
+        if (isSupposedDir(path)) {
             VfsDirectory subDir = findSubDir(dir, path);
             return createFile(subDir, retrieveSubPath(path));
         } else {
@@ -113,10 +118,9 @@ public class VfsSystem {
      * @param dir
      * @param path
      * @return
-     * @throws VfsException
      */
 
-    public VfsDirectory findSubDir(VfsDirectory dir, String path) throws VfsException {
+    public VfsDirectory findSubDir(VfsDirectory dir, String path)  {
 
         String firstDir = retrieveFirstDir(path);
         Optional<VfsEntity> supposedDir = dir.findFirst(firstDir);
@@ -132,14 +136,13 @@ public class VfsSystem {
      *
      * @param path path to search
      * @return true if
-     * @throws VfsException if path is invalid
      */
-    public boolean contains(String path) throws VfsException {
+    public boolean contains(String path)  {
         return contains(ROOT, path);
     }
 
-    private boolean contains(VfsDirectory dir, String path) throws VfsException {
-        if (IsSupposedDir(path)) {
+    private boolean contains(VfsDirectory dir, String path)  {
+        if (isSupposedDir(path)) {
             VfsDirectory subDir = findSubDir(dir, path);
             return contains(subDir, retrieveSubPath(path));
         } else {
@@ -155,6 +158,21 @@ public class VfsSystem {
 
     }
 
+    public void move(String srcPath, String destPath)
+    {
+
+    }
+
+    public void copy(String srcPath, String destPath)
+    {
+        VfsEntity srcEntity = findEntity(srcPath);
+        VfsEntity destEntity=findEntity(destPath);
+
+
+    }
+
+
+
 
     public void clean() {
         ROOT.clean();
@@ -164,14 +182,12 @@ public class VfsSystem {
     //region Helpers
 
     private static String retrieveSubPath(String path) {
-        List<String> dirs = new ArrayList<>(Arrays.asList(path.split(SEPARATOR)));
-        dirs.remove(0);
-        return String.join(SEPARATOR, dirs);
+        return new ArrayList<>(Arrays.asList(path.split(SEPARATOR)))
+                .stream().skip(1).collect(Collectors.joining(","));
     }
 
     private static String retrieveFirstDir(String path) {
-        List<String> dirs = new ArrayList<>(Arrays.asList(path.split(SEPARATOR)));
-        return dirs.get(0);
+        return new ArrayList<>(Arrays.asList(path.split(SEPARATOR))).get(0);
     }
 
     private static String retrieveLastPathPart(String path) {
@@ -180,7 +196,7 @@ public class VfsSystem {
     }
 
 
-    private static boolean IsSupposedDir(String newPath) {
+    private static boolean isSupposedDir(String newPath) {
         return newPath.contains(SEPARATOR);
     }
 

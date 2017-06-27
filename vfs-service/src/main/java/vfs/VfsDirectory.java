@@ -7,9 +7,21 @@ import java.util.Optional;
  */
 public interface VfsDirectory {
 
+    /**
+     * Creates file in current directory
+     * @param name
+     * @return
+     * @throws VfsException
+     */
     VfsFile createFile(String name) throws VfsException;
 
-    VfsDirectory createSubDir(String path) throws VfsException;
+    /**
+     * Creates directory in current directory
+     * @param name
+     * @return
+     * @throws VfsException
+     */
+    VfsDirectory createSubDir(String name) throws VfsException;
 
 
     /**
@@ -31,9 +43,18 @@ public interface VfsDirectory {
 
     Optional<VfsEntity> findFirst(String name);
 
+    /**
+     * Clears directory
+     */
     void clean();
 
+    /**
+     * Throws exception if directory contains subdirectories
+     */
     void checkSubDirs() ;
 
+    /**
+     * Throws exception if directory contains locked files
+     */
     void checkLocks() ;
 }

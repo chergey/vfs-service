@@ -86,8 +86,6 @@ public class VfsDirectoryImpl extends VfsEntity implements VfsDirectory {
                 throw new VfsException(VfsExceptionType.DIR_CONTAINS_LOCKED_FILES, getName());
         }
 
-
-
         entities.stream().filter(f -> f instanceof VfsDirectory)
                 .map(f -> (VfsDirectory) f).forEach(VfsDirectory::checkLocks);
 
